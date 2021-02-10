@@ -19,7 +19,7 @@ const (
 	password string = ""
 	host     string = ""
 	port     int32  = 27017
-	name     string = "sampledb"
+	name     string = "sweatdb"
 )
 
 // GetDB - gets the database connection
