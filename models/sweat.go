@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/db"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -45,5 +46,33 @@ func (s *Sweat) Create() (err error) {
 	}
 
 	fmt.Println("Inserted sweat into collection")
+	return
+}
+
+// ListAllSweat - lists all sweats from database
+func ListAllSweat() (sweats []Sweat, err error) {
+	db, err := db.GetDB()
+	if err != nil {
+		fmt.Println("No Database connection: ", err)
+		return
+	}
+
+	collection := db.Collection(SWEAT_TABLE)
+	ctx := context.TODO()
+	cursor, err := collection.Find(ctx, bson.D{})
+	if err != nil {
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var elem Sweat
+	for cursor.Next(ctx) {
+		err = cursor.Decode(&elem)
+		sweats = append(sweats, elem)
+	}
+	if err = cursor.Err(); err != nil {
+		fmt.Printf("Error in listing data: ", err)
+		return
+	}
 	return
 }
