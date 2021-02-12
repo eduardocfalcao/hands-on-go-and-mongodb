@@ -15,9 +15,9 @@ var (
 )
 
 const (
-	user     string = ""
-	password string = ""
-	host     string = ""
+	user     string = "admin"
+	password string = "password"
+	host     string = "localhost"
 	port     int32  = 27017
 	name     string = "sweatdb"
 )
@@ -28,8 +28,8 @@ func GetDB() (db *mongo.Database, err error) {
 		return
 	}
 
-	uri := fmt.Sprintf(("mongodb://%s:%s@%s:%d/%s?authMechanism=SCRAM-SHA-1"), user, password, host, port, name)
-
+	uri := fmt.Sprintf("mongodb://%s:%s@%s:%d/%s?authSource=admin", user, password, host, port, name)
+	fmt.Printf("Trying to connect to mongodb: %s.\n", uri)
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		return
