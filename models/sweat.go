@@ -71,7 +71,33 @@ func ListAllSweat() (sweats []Sweat, err error) {
 		sweats = append(sweats, elem)
 	}
 	if err = cursor.Err(); err != nil {
-		fmt.Printf("Error in listing data: ", err)
+		fmt.Println("Error in listing data: ", err)
+		return
+	}
+	return
+}
+
+// GetSweatByID returns a Sweat by it's ID
+func GetSweatByID(id string) (sweat Sweat, err error) {
+	db, err := db.GetDB()
+	if err != nil {
+		fmt.Println("No database connection: ", err)
+		return
+	}
+
+	collection := db.Collection(SWEAT_TABLE)
+	ctx := context.TODO()
+	objectID, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		fmt.Println("Error converting string to ObjectID. Error: ", err)
+		return
+	}
+
+	result := collection.FindOne(ctx, bson.M{"_id": objectID})
+
+	if err = result.Decode(&sweat); err != nil {
+		fmt.Println("Error decoding Sweat from database: ", err)
 		return
 	}
 	return

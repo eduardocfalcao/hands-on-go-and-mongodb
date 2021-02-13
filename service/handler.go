@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/models"
+	"github.com/gorilla/mux"
 )
 
 // PingResponse - PingResponse type
@@ -68,7 +69,26 @@ func getSweatSamplesHandler(rw http.ResponseWriter, req *http.Request) {
 }
 
 func getSweatByIDHandler(rw http.ResponseWriter, req *http.Request) {
+	status := http.StatusOK
+	params := mux.Vars(req)
+	id := params["id"]
 
+	sweat, err := models.GetSweatByID(id)
+
+	if err != nil {
+		fmt.Println("Error fetching sweat by the ID: ", id, ". Error: ", err)
+		status = http.StatusNotFound
+	} else {
+		respBytes, err := json.Marshal(sweat)
+		if err != nil {
+			fmt.Println("Error mashaling the sweat. Error: ", err)
+		} else {
+			rw.Header().Add("Content-Type", "application/json")
+			rw.Write(respBytes)
+		}
+	}
+
+	rw.WriteHeader(status)
 }
 
 func getSweatByUserIDHandler(rw http.ResponseWriter, req *http.Request) {

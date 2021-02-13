@@ -8,6 +8,9 @@ import (
 	"testing"
 
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/models"
+	"github.com/gorilla/mux"
+	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestCreateSweat(t *testing.T) {
@@ -52,4 +55,38 @@ func TestSweatSamples(t *testing.T) {
 		t.Errorf("No sweat samples. Expected at least 1")
 	}
 
+}
+
+func TestGetSweatByID(t *testing.T) {
+	req, err := http.NewRequest("GET", "/sweat/6025c8968ca2ab64a682f041", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req = mux.SetURLVars(req, map[string]string{
+		"id": "6025c8968ca2ab64a682f041",
+	})
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(getSweatByIDHandler)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	var sweat models.Sweat
+
+	err = json.Unmarshal([]byte(rr.Body.String()), &sweat)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedID, err := primitive.ObjectIDFromHex("6025c8968ca2ab64a682f041")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expectedID, sweat.ID)
 }
