@@ -15,6 +15,9 @@ MongoDB can be started from docker:
 
 ## Run the application
 
+Before running the application, make a copy of the file `application.yml.default` and rename this copied file to `application.yml`.
+Set your configuration values properly in this file.
+
 Run the command below to start the  application.
 
 ```
