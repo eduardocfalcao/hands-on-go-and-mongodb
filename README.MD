@@ -12,3 +12,11 @@ MongoDB can be started from docker:
 
 `docker run --name mongodb -p 27017-27017 -d mongo`
 
+
+## Run the application
+
+Run the command below to start the  application.
+
+```
+go run main.go
+```
