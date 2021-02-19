@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/models"
 	"github.com/gorilla/mux"
 )
@@ -53,13 +54,13 @@ func getSweatSamplesHandler(rw http.ResponseWriter, req *http.Request) {
 	sweats, err := models.ListAllSweat()
 
 	if err != nil {
-		fmt.Println("Error fetching data", err)
+		logger.Get().Errorf("Error fetching data", err)
 		status = http.StatusInternalServerError
 	}
 
 	respBytes, err := json.Marshal(sweats)
 	if err != nil {
-		fmt.Println("Error marshaling data", err)
+		logger.Get().Errorf("Error marshaling data", err)
 		status = http.StatusInternalServerError
 	}
 
@@ -76,12 +77,12 @@ func getSweatByIDHandler(rw http.ResponseWriter, req *http.Request) {
 	sweat, err := models.GetSweatByID(id)
 
 	if err != nil {
-		fmt.Println("Error fetching sweat by the ID: ", id, ". Error: ", err)
+		logger.Get().Errorf("Error fetching sweat by the ID: ", id, ". Error: ", err)
 		status = http.StatusNotFound
 	} else {
 		respBytes, err := json.Marshal(sweat)
 		if err != nil {
-			fmt.Println("Error mashaling the sweat. Error: ", err)
+			logger.Get().Errorf("Error mashaling the sweat. Error: ", err)
 		} else {
 			rw.Header().Add("Content-Type", "application/json")
 			rw.Write(respBytes)

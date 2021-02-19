@@ -2,10 +2,10 @@ package models
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/db"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -33,7 +33,7 @@ type Sweat struct {
 func (s *Sweat) Create() (err error) {
 	db, err := db.GetDB()
 	if err != nil {
-		fmt.Println("No Database connection: ", err)
+		logger.Get().Errorf("No Database connection: ", err)
 		return
 	}
 
@@ -41,11 +41,11 @@ func (s *Sweat) Create() (err error) {
 	collection := db.Collection(SWEAT_TABLE)
 	_, err = collection.InsertOne(context.TODO(), s)
 	if err != nil {
-		fmt.Printf("Error Inserting sweat: %v", s)
+		logger.Get().Errorf("Error Inserting sweat: %v", s)
 		return
 	}
 
-	fmt.Println("Inserted sweat into collection")
+	logger.Get().Info("Inserted sweat into collection")
 	return
 }
 
@@ -53,7 +53,7 @@ func (s *Sweat) Create() (err error) {
 func ListAllSweat() (sweats []Sweat, err error) {
 	db, err := db.GetDB()
 	if err != nil {
-		fmt.Println("No Database connection: ", err)
+		logger.Get().Errorf("No Database connection: ", err)
 		return
 	}
 
@@ -71,7 +71,7 @@ func ListAllSweat() (sweats []Sweat, err error) {
 		sweats = append(sweats, elem)
 	}
 	if err = cursor.Err(); err != nil {
-		fmt.Println("Error in listing data: ", err)
+		logger.Get().Errorf("Error in listing data: ", err)
 		return
 	}
 	return
@@ -81,7 +81,7 @@ func ListAllSweat() (sweats []Sweat, err error) {
 func GetSweatByID(id string) (sweat Sweat, err error) {
 	db, err := db.GetDB()
 	if err != nil {
-		fmt.Println("No database connection: ", err)
+		logger.Get().Errorf("No database connection: ", err)
 		return
 	}
 
@@ -90,14 +90,14 @@ func GetSweatByID(id string) (sweat Sweat, err error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
-		fmt.Println("Error converting string to ObjectID. Error: ", err)
+		logger.Get().Errorf("Error converting string to ObjectID. Error: ", err)
 		return
 	}
 
 	result := collection.FindOne(ctx, bson.M{"_id": objectID})
 
 	if err = result.Decode(&sweat); err != nil {
-		fmt.Println("Error decoding Sweat from database: ", err)
+		logger.Get().Errorf("Error decoding Sweat from database: ", err)
 		return
 	}
 	return

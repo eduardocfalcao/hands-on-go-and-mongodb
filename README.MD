@@ -10,7 +10,7 @@ The project and some notes will be stored here as I move on in the training.
 
 MongoDB can be started from docker:
 
-`docker run --name mongodb -p 27017-27017 -d mongo`
+`docker run --name mongodb -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=secret -p 27017-27017 -d mongo`
 
 
 ## Run the application
@@ -20,6 +20,6 @@ Set your configuration values properly in this file.
 
 Run the command below to start the  application.
 
-```
+```bash
 go run main.go
 ```

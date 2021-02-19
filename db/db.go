@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/config"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -28,7 +29,7 @@ func GetDB() (db *mongo.Database, err error) {
 	password := config.ReadEnvString("DB_PASSWORD")
 
 	uri := fmt.Sprintf("mongodb://%s:%s@%s:%d/%s?authSource=%s", user, password, host, port, name, config.ReadEnvString("DB_AUTH_MECH"))
-	fmt.Printf("Trying to connect to mongodb: %s.\n", uri)
+	logger.Get().Infof("Trying to connect to mongodb: %s.\n", uri)
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		return
@@ -39,6 +40,7 @@ func GetDB() (db *mongo.Database, err error) {
 
 	err = client.Connect(ctx)
 	if err != nil {
+		logger.Get().Fatal("Cannot initialize database.")
 		return
 	}
 
@@ -48,7 +50,7 @@ func GetDB() (db *mongo.Database, err error) {
 		return
 	}
 
-	fmt.Println("Connedted To MongoDB")
+	logger.Get().Info("Connedted To MongoDB")
 	db = client.Database(name)
 	return
 }
