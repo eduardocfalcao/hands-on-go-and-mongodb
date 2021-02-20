@@ -29,17 +29,33 @@ type Sweat struct {
 	HeartBeat       int32              `bson:"heart_beat" json:"heart_beat,omitempty"`
 }
 
+func getUserIDFromContext(ctx context.Context) (userID string) {
+	userIDValue := ctx.Value("UserID")
+	if userIDValue != nil {
+		userID = userIDValue.(string)
+	}
+	return
+}
+
 // Create - Persist the Sweat object in the database
-func (s *Sweat) Create() (err error) {
+func (s *Sweat) Create(ctx context.Context) (err error) {
 	db, err := db.GetDB()
 	if err != nil {
 		logger.Get().Errorf("No Database connection: ", err)
 		return
 	}
 
+	userIDString := getUserIDFromContext(ctx)
+	userID, err := primitive.ObjectIDFromHex(userIDString)
+	if err != nil {
+		logger.Get().Errorf("Error occurred trying to parse ID received from")
+		return
+	}
+
+	s.UserID = userID
 	s.CreatedAt = time.Now()
 	collection := db.Collection(SWEAT_TABLE)
-	_, err = collection.InsertOne(context.TODO(), s)
+	_, err = collection.InsertOne(ctx, s)
 	if err != nil {
 		logger.Get().Errorf("Error Inserting sweat: %v", s)
 		return
@@ -50,7 +66,7 @@ func (s *Sweat) Create() (err error) {
 }
 
 // ListAllSweat - lists all sweats from database
-func ListAllSweat() (sweats []Sweat, err error) {
+func ListAllSweat(ctx context.Context) (sweats []Sweat, err error) {
 	db, err := db.GetDB()
 	if err != nil {
 		logger.Get().Errorf("No Database connection: ", err)
@@ -58,7 +74,6 @@ func ListAllSweat() (sweats []Sweat, err error) {
 	}
 
 	collection := db.Collection(SWEAT_TABLE)
-	ctx := context.TODO()
 	cursor, err := collection.Find(ctx, bson.D{})
 	if err != nil {
 		return
@@ -78,7 +93,7 @@ func ListAllSweat() (sweats []Sweat, err error) {
 }
 
 // GetSweatByID returns a Sweat by it's ID
-func GetSweatByID(id string) (sweat Sweat, err error) {
+func GetSweatByID(ctx context.Context, id string) (sweat Sweat, err error) {
 	db, err := db.GetDB()
 	if err != nil {
 		logger.Get().Errorf("No database connection: ", err)
@@ -86,7 +101,6 @@ func GetSweatByID(id string) (sweat Sweat, err error) {
 	}
 
 	collection := db.Collection(SWEAT_TABLE)
-	ctx := context.TODO()
 	objectID, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {

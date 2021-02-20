@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,6 +14,11 @@ import (
 // PingResponse - PingResponse type
 type PingResponse struct {
 	Message string `json:"message"`
+}
+
+func WithUserContext(req *http.Request) *http.Request {
+	ctx := context.WithValue(req.Context(), "UserID", req.Header.Get("UserID"))
+	return req.WithContext(ctx)
 }
 
 func pingHandler(rw http.ResponseWriter, req *http.Request) {
@@ -31,6 +37,7 @@ func pingHandler(rw http.ResponseWriter, req *http.Request) {
 func createSweatHandler(rw http.ResponseWriter, req *http.Request) {
 	decoder := json.NewDecoder(req.Body)
 	status := http.StatusOK
+	req = WithUserContext(req)
 
 	var s models.Sweat
 
@@ -39,7 +46,7 @@ func createSweatHandler(rw http.ResponseWriter, req *http.Request) {
 		status = http.StatusInternalServerError
 	} else {
 		fmt.Println(s)
-		err = s.Create()
+		err = s.Create(req.Context())
 		if err != nil {
 			status = http.StatusInternalServerError
 		}
@@ -51,7 +58,7 @@ func createSweatHandler(rw http.ResponseWriter, req *http.Request) {
 
 func getSweatSamplesHandler(rw http.ResponseWriter, req *http.Request) {
 	status := http.StatusOK
-	sweats, err := models.ListAllSweat()
+	sweats, err := models.ListAllSweat(req.Context())
 
 	if err != nil {
 		logger.Get().Errorf("Error fetching data", err)
@@ -74,7 +81,7 @@ func getSweatByIDHandler(rw http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	id := params["id"]
 
-	sweat, err := models.GetSweatByID(id)
+	sweat, err := models.GetSweatByID(req.Context(), id)
 
 	if err != nil {
 		logger.Get().Errorf("Error fetching sweat by the ID: ", id, ". Error: ", err)
