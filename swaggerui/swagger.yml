@@ -1,0 +1,91 @@
+consumes:
+- application/io.goswagger.examples.todo-list.v1+json
+info:
+  title: Sweat management application
+  version: 0.1
+servers:
+  - url: http://localhost:33001/
+    description: Localhost server url.
+  - url: http://somecouldurl/
+    description: (TODO) Test environment on cloud.
+tags:
+  - name: "user"
+    description: "Everything about user"
+    externalDocs:
+  - name: "sweat"
+    description: "Operations about sweat"
+paths: 
+  /user:
+    post:
+      tags:
+        - user
+      summary: "Create a new user"
+      description: ""
+      operationId: "addUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      - in: "header"
+        name: "Accept"
+        description: "This field determines which API version should be used. The version `application/vnd.sweatmgr.v1` should be used for this endpoint."
+        required: true
+        schema:
+          type: string
+          example: "application/vnd.sweatmgr.v1"
+
+
+      responses:
+        "400":
+          description: "Invalid input values. Details of what happened will be returned."
+          schema:
+            $ref: '#/definitions/InputValidationError'
+definitions:
+  InputValidationError:
+    type: "object"
+    properties:
+      message:
+        type: string
+      error_code:
+        type: string
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/InputValidationErrorDetails'
+  InputValidationErrorDetails:
+    type: "object"
+    properties:
+      field:
+        type: string
+      message:
+        type: string
+
+  User:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+    xml:
+      name: "User"
+produces:
+- application/io.goswagger.examples.todo-list.v1+json
+schemes:
+- http
+swagger: "2.0"

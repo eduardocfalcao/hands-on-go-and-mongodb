@@ -17,6 +17,9 @@ func InitRouter() (router *mux.Router) {
 	router = mux.NewRouter()
 	router.HandleFunc("/ping", pingHandler).Methods(http.MethodGet)
 
+	swaggerUIHandler := http.StripPrefix("/swaggerui", http.FileServer(http.Dir("./swaggerui/")))
+	router.PathPrefix("/swaggerui").Handler(swaggerUIHandler)
+
 	v1 := fmt.Sprintf("application/vnd.%s.v1", appName)
 
 	router.HandleFunc("/sweat", createSweatHandler).Methods(http.MethodPost).Headers(versionHeader, v1)
