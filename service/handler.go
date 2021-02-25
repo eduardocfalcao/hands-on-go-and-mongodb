@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/consts"
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/models"
 	"github.com/gorilla/mux"
@@ -16,8 +17,8 @@ type PingResponse struct {
 	Message string `json:"message"`
 }
 
-func WithUserContext(req *http.Request) *http.Request {
-	ctx := context.WithValue(req.Context(), "UserID", req.Header.Get("UserID"))
+func withUserContext(req *http.Request) *http.Request {
+	ctx := context.WithValue(req.Context(), consts.UserIDCtxKey, req.Header.Get("UserID"))
 	return req.WithContext(ctx)
 }
 
@@ -37,7 +38,7 @@ func pingHandler(rw http.ResponseWriter, req *http.Request) {
 func createSweatHandler(rw http.ResponseWriter, req *http.Request) {
 	decoder := json.NewDecoder(req.Body)
 	status := http.StatusOK
-	req = WithUserContext(req)
+	req = withUserContext(req)
 
 	var s models.Sweat
 

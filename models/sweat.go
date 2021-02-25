@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/consts"
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/db"
 	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
 	"go.mongodb.org/mongo-driver/bson"
@@ -30,7 +31,7 @@ type Sweat struct {
 }
 
 func getUserIDFromContext(ctx context.Context) (userID string) {
-	userIDValue := ctx.Value("UserID")
+	userIDValue := ctx.Value(consts.UserIDCtxKey)
 	if userIDValue != nil {
 		userID = userIDValue.(string)
 	}
