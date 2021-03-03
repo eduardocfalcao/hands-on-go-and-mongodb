@@ -1,4 +1,4 @@
-module github.com/eduardocfalcao/hands-on-go-and-mongodb
+module github.com/eduardocfalcao/src/sweatmgr/hands-on-go-and-mongodb
 
 go 1.14
 
