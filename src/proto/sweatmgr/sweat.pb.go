@@ -298,13 +298,13 @@ var file_src_proto_sweatmgr_sweat_proto_rawDesc = []byte{
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x69, 0x64, 0x12,
 	0x25, 0x0a, 0x05, 0x73, 0x77, 0x65, 0x61, 0x74, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0f,
 	0x2e, 0x73, 0x77, 0x65, 0x61, 0x74, 0x6d, 0x67, 0x72, 0x2e, 0x53, 0x77, 0x65, 0x61, 0x74, 0x52,
-	0x05, 0x73, 0x77, 0x65, 0x61, 0x74, 0x32, 0x53, 0x0a, 0x03, 0x41, 0x70, 0x69, 0x12, 0x4c, 0x0a,
-	0x0d, 0x47, 0x65, 0x74, 0x53, 0x77, 0x65, 0x61, 0x74, 0x53, 0x74, 0x61, 0x74, 0x73, 0x12, 0x1b,
-	0x2e, 0x73, 0x77, 0x65, 0x61, 0x74, 0x6d, 0x67, 0x72, 0x2e, 0x53, 0x77, 0x65, 0x61, 0x74, 0x53,
-	0x74, 0x61, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x73, 0x77,
-	0x65, 0x61, 0x74, 0x6d, 0x67, 0x72, 0x2e, 0x53, 0x77, 0x65, 0x61, 0x74, 0x53, 0x74, 0x61, 0x74,
-	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x05, 0x73, 0x77, 0x65, 0x61, 0x74, 0x32, 0x5f, 0x0a, 0x0f, 0x53, 0x77, 0x65, 0x61, 0x74, 0x4d,
+	0x67, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x4c, 0x0a, 0x0d, 0x47, 0x65, 0x74,
+	0x53, 0x77, 0x65, 0x61, 0x74, 0x53, 0x74, 0x61, 0x74, 0x73, 0x12, 0x1b, 0x2e, 0x73, 0x77, 0x65,
+	0x61, 0x74, 0x6d, 0x67, 0x72, 0x2e, 0x53, 0x77, 0x65, 0x61, 0x74, 0x53, 0x74, 0x61, 0x74, 0x73,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x73, 0x77, 0x65, 0x61, 0x74, 0x6d,
+	0x67, 0x72, 0x2e, 0x53, 0x77, 0x65, 0x61, 0x74, 0x53, 0x74, 0x61, 0x74, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -329,8 +329,8 @@ var file_src_proto_sweatmgr_sweat_proto_goTypes = []interface{}{
 var file_src_proto_sweatmgr_sweat_proto_depIdxs = []int32{
 	3, // 0: sweatmgr.Sweat.created_at:type_name -> google.protobuf.Timestamp
 	0, // 1: sweatmgr.SweatStatsResponse.sweat:type_name -> sweatmgr.Sweat
-	1, // 2: sweatmgr.Api.GetSweatStats:input_type -> sweatmgr.SweatStatsRequest
-	2, // 3: sweatmgr.Api.GetSweatStats:output_type -> sweatmgr.SweatStatsResponse
+	1, // 2: sweatmgr.SweatMgrService.GetSweatStats:input_type -> sweatmgr.SweatStatsRequest
+	2, // 3: sweatmgr.SweatMgrService.GetSweatStats:output_type -> sweatmgr.SweatStatsResponse
 	3, // [3:4] is the sub-list for method output_type
 	2, // [2:3] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -409,72 +409,72 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// ApiClient is the client API for Api service.
+// SweatMgrServiceClient is the client API for SweatMgrService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type ApiClient interface {
+type SweatMgrServiceClient interface {
 	GetSweatStats(ctx context.Context, in *SweatStatsRequest, opts ...grpc.CallOption) (*SweatStatsResponse, error)
 }
 
-type apiClient struct {
+type sweatMgrServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewApiClient(cc grpc.ClientConnInterface) ApiClient {
-	return &apiClient{cc}
+func NewSweatMgrServiceClient(cc grpc.ClientConnInterface) SweatMgrServiceClient {
+	return &sweatMgrServiceClient{cc}
 }
 
-func (c *apiClient) GetSweatStats(ctx context.Context, in *SweatStatsRequest, opts ...grpc.CallOption) (*SweatStatsResponse, error) {
+func (c *sweatMgrServiceClient) GetSweatStats(ctx context.Context, in *SweatStatsRequest, opts ...grpc.CallOption) (*SweatStatsResponse, error) {
 	out := new(SweatStatsResponse)
-	err := c.cc.Invoke(ctx, "/sweatmgr.Api/GetSweatStats", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sweatmgr.SweatMgrService/GetSweatStats", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ApiServer is the server API for Api service.
-type ApiServer interface {
+// SweatMgrServiceServer is the server API for SweatMgrService service.
+type SweatMgrServiceServer interface {
 	GetSweatStats(context.Context, *SweatStatsRequest) (*SweatStatsResponse, error)
 }
 
-// UnimplementedApiServer can be embedded to have forward compatible implementations.
-type UnimplementedApiServer struct {
+// UnimplementedSweatMgrServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedSweatMgrServiceServer struct {
 }
 
-func (*UnimplementedApiServer) GetSweatStats(context.Context, *SweatStatsRequest) (*SweatStatsResponse, error) {
+func (*UnimplementedSweatMgrServiceServer) GetSweatStats(context.Context, *SweatStatsRequest) (*SweatStatsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSweatStats not implemented")
 }
 
-func RegisterApiServer(s *grpc.Server, srv ApiServer) {
-	s.RegisterService(&_Api_serviceDesc, srv)
+func RegisterSweatMgrServiceServer(s *grpc.Server, srv SweatMgrServiceServer) {
+	s.RegisterService(&_SweatMgrService_serviceDesc, srv)
 }
 
-func _Api_GetSweatStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SweatMgrService_GetSweatStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SweatStatsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ApiServer).GetSweatStats(ctx, in)
+		return srv.(SweatMgrServiceServer).GetSweatStats(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sweatmgr.Api/GetSweatStats",
+		FullMethod: "/sweatmgr.SweatMgrService/GetSweatStats",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServer).GetSweatStats(ctx, req.(*SweatStatsRequest))
+		return srv.(SweatMgrServiceServer).GetSweatStats(ctx, req.(*SweatStatsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Api_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "sweatmgr.Api",
-	HandlerType: (*ApiServer)(nil),
+var _SweatMgrService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "sweatmgr.SweatMgrService",
+	HandlerType: (*SweatMgrServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetSweatStats",
-			Handler:    _Api_GetSweatStats_Handler,
+			Handler:    _SweatMgrService_GetSweatStats_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

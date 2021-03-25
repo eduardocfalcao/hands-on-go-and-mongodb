@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/models"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/models"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"

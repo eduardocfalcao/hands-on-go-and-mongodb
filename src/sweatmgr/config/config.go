@@ -16,6 +16,8 @@ var (
 func Load() {
 	viper.SetDefault("APP_NAME", "app")
 	viper.SetDefault("APP_PORT", "8002")
+	viper.SetDefault("GRPC_HOST", "")
+	viper.SetDefault("GRPC_PORT", "")
 
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")
@@ -54,6 +56,15 @@ func ReadEnvInt(key string) int {
 	v, err := strconv.Atoi(viper.GetString(key))
 	if err != nil {
 		panic(fmt.Sprintf("Key %s is not a valid integer", key))
+	}
+	return v
+}
+
+func ReadEnvBool(key string) bool {
+	checkIfSet(key)
+	v, err := strconv.ParseBool(viper.GetString(key))
+	if err != nil {
+		panic(fmt.Sprintf("Key %s is not a valid boolean", key))
 	}
 	return v
 }

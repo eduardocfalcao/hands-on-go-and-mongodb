@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/config"
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/config"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"

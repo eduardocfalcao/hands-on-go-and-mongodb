@@ -27,7 +27,7 @@ message SweatStatsResponse {
     repeated Sweat sweat = 2;
 }
 
-service Api {
+service SweatMgrService {
     rpc GetSweatStats(SweatStatsRequest) returns (SweatStatsResponse) {}
 }
 

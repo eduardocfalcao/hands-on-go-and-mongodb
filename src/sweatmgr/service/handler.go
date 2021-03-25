@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/consts"
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/models"
+	consts "github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/consts"
+	logger "github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/logger"
+	models "github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/models"
 	"github.com/gorilla/mux"
 )
 

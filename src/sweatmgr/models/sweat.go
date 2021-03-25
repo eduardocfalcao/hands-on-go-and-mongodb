@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/consts"
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/db"
-	"github.com/eduardocfalcao/hands-on-go-and-mongodb/logger"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/consts"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/db"
+	"github.com/eduardocfalcao/hands-on-go-and-mongodb/src/sweatmgr/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
